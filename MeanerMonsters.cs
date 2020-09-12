@@ -1,5 +1,5 @@
 // Project:         MeanerMonsters mod for Daggerfall Unity (http://www.dfworkshop.net)
-// Copyright:       Copyright (C) 2019 Ralzar
+// Copyright:       Copyright (C) 2020 Ralzar
 // License:         MIT License (http://www.opensource.org/licenses/mit-license.php)
 // Author:          Hazelnut & Ralzar
 
@@ -18,9 +18,74 @@ namespace MeanerMonsters
         [Invoke(StateManager.StateTypes.Start, 0)]
         public static void Init(InitParams initParams)
         {
+            Mod unleveledMobs = ModManager.Instance.GetMod("Unleveled Mobs");
             mod = initParams.Mod;
             var go = new GameObject(mod.Title);
             go.AddComponent<MeanerMonsters>();
+
+            if (unleveledMobs != null)
+            {
+
+                Debug.Log("[Meaner Monsters] Unleveled Mobs wilderness spawn: add Alternate Dragonling");
+
+                RandomEncounters.EncounterTables[21] = new RandomEncounterTable()
+                {
+                    Enemies = new MobileTypes[]
+                    {
+                    MobileTypes.GiantScorpion,
+                    MobileTypes.Nymph,
+                    MobileTypes.GiantBat,
+                    MobileTypes.Centaur,
+                    MobileTypes.Orc,
+                    MobileTypes.Dragonling,
+                    MobileTypes.Dragonling_Alternate,
+                    MobileTypes.GiantScorpion,
+                    MobileTypes.Nymph,
+                    MobileTypes.GiantBat,
+                    MobileTypes.Centaur,
+                    MobileTypes.Orc,
+                    MobileTypes.Dragonling,
+                    MobileTypes.GiantScorpion,
+                    MobileTypes.Nymph,
+                    MobileTypes.GiantBat,
+                    MobileTypes.Centaur,
+                    MobileTypes.Orc,
+                    MobileTypes.Dragonling,
+                    MobileTypes.Dragonling_Alternate,
+                    MobileTypes.GiantScorpion,
+                    MobileTypes.Nymph,
+                    },
+                };
+
+                RandomEncounters.EncounterTables[36] = new RandomEncounterTable()
+                {
+                    Enemies = new MobileTypes[]
+                    {
+                    MobileTypes.Imp,
+                    MobileTypes.GrizzlyBear,
+                    MobileTypes.Spriggan,
+                    MobileTypes.Spider,
+                    MobileTypes.Centaur,
+                    MobileTypes.Nymph,
+                    MobileTypes.Dragonling,
+                    MobileTypes.Harpy,
+                    MobileTypes.Giant,
+                    MobileTypes.Imp,
+                    MobileTypes.GrizzlyBear,
+                    MobileTypes.Spriggan,
+                    MobileTypes.Spider,
+                    MobileTypes.Centaur,
+                    MobileTypes.Nymph,
+                    MobileTypes.Dragonling,
+                    MobileTypes.Dragonling_Alternate,
+                    MobileTypes.Harpy,
+                    MobileTypes.Giant,
+                    MobileTypes.Imp,
+                    MobileTypes.GrizzlyBear,
+                    },
+                };
+            }
+            else { Debug.Log("[Meaner Monsters] Unleveled Mobs not active.");  }
         }
 
         void Awake()
@@ -38,12 +103,13 @@ namespace MeanerMonsters
             foreach (EnemyData mobData in mobEnemyDataArray)
             {
                 // Log a message indicating the enemy mob being updated.
-                Debug.LogFormat("Updating enemy data for {0}.", EnemyBasics.Enemies[mobData.ID].Name);
+                Debug.LogFormat("Updating enemy data for {0}.", EnemyBasics.Enemies[mobData.ID]);
+                //Debug.LogFormat("Updating enemy data for {0}.", EnemyBasics.Enemies[mobData.ID].Name);
 
                 if (mobData.Level != -1)
                     EnemyBasics.Enemies[mobData.ID].Level = mobData.Level;
-                if (mobData.Name != "")
-                    EnemyBasics.Enemies[mobData.ID].Name = mobData.Name;
+                //if (mobData.Name != "")
+                //    EnemyBasics.Enemies[mobData.ID].Name = mobData.Name;
                 if (mobData.MinHp != -1)
                     EnemyBasics.Enemies[mobData.ID].MinHealth = mobData.MinHp;
                 if (mobData.MaxHp != -1)
