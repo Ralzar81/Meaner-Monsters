@@ -15,10 +15,13 @@ namespace MeanerMonsters
     {
         static Mod mod;
 
+        static bool dexWarning = false;
+
         [Invoke(StateManager.StateTypes.Start, 0)]
         public static void Init(InitParams initParams)
         {
             Mod unleveledMobs = ModManager.Instance.GetMod("Unleveled Mobs");
+            Mod dex = ModManager.Instance.GetModFromGUID("76557441-7025-402e-a145-e3e1a28a093d");
             mod = initParams.Mod;
             var go = new GameObject(mod.Title);
             go.AddComponent<MeanerMonsters>();
@@ -85,8 +88,15 @@ namespace MeanerMonsters
                     },
                 };
             }
-            else { Debug.Log("[Meaner Monsters] Unleveled Mobs not active.");  }
+            else
+                Debug.Log("[Meaner Monsters] Unleveled Mobs not active.");
+
+            dexWarning = dex != null;
+            if (dexWarning)
+                Debug.Log("[Meaner Monsters] DEX not active.");
         }
+
+        private static bool pco = false;
 
         void Awake()
         {
@@ -98,9 +108,12 @@ namespace MeanerMonsters
         private static void InitMod()
         {
             Debug.Log("Begin mod init: MeanerMonsters");
+            EnemyData[] enemyArray = mobEnemyDataArray;
+            if (pco)
+                enemyArray = pcoEnemyDataArray;
 
             //Iterate over the new mob enemy data array and load into DFU enemies data.
-            foreach (EnemyData mobData in mobEnemyDataArray)
+            foreach (EnemyData mobData in enemyArray)
             {
                 // Log a message indicating the enemy mob being updated.
                 Debug.LogFormat("Updating enemy data for {0}.", EnemyBasics.Enemies[mobData.ID]);
@@ -139,6 +152,17 @@ namespace MeanerMonsters
             }
 
             Debug.Log("Finished mod init: MeanerMonsters");
+        }
+
+        private void Update()
+        {
+            if (dexWarning && GameManager.Instance.IsPlayingGame())
+            {
+                Debug.Log("[Meaner Monsters] Update");
+                dexWarning = false;
+                DaggerfallUI.MessageBox("Please switch to MUDEX - Meaner Unleveled Daggerfall Enemy Expansion");
+                DaggerfallUI.MessageBox("Meaner Monsters and Unleveled Mobs is incompatible with DEX.");
+            }
         }
 
         public static int CorpseTexture(int archive, int record)
@@ -396,6 +420,196 @@ namespace MeanerMonsters
                 level: 21,
                 armor: -12
             ),
-        };       
+        };
+
+
+
+        private static EnemyData[] pcoEnemyDataArray = new EnemyData[]
+        {
+            new EnemyData
+            (   // Grizzly Bear
+                id: 4,
+                minDmg: 1, maxDmg: 2,
+                minDmg2: 8, maxDmg2: 12,
+                minDmg3: 10, maxDmg3: 20,
+                minHp: 55, maxHp: 110,
+                armor: 8
+            ),
+            new EnemyData
+            (   // Sabertooth Tiger
+                id: 5,
+                minDmg: 8, maxDmg: 15,
+                minDmg2: 8, maxDmg2: 20,
+                minDmg3: 10, maxDmg3: 25,
+                minHp: 40, maxHp: 80,
+                armor: 5
+            ),
+            new EnemyData
+            (   // Spider
+                id: 6,
+                minDmg: 4, maxDmg: 10,
+                minHp: 20, maxHp: 50,
+                level: 2,
+                armor: 6
+            ),
+            new EnemyData
+            (   // Werewolf
+                id: 9,
+                minDmg : 8, maxDmg: 10,
+                minDmg2: 8, maxDmg2: 10,
+                minDmg3: 15, maxDmg3: 30,
+                minHp: 25, maxHp: 50,
+                level: 8,
+                armor: 3
+            ),
+            new EnemyData
+            (   // Wereboar
+                id: 14,
+                minDmg: 5, maxDmg: 8,
+                minDmg2: 5, maxDmg2: 8,
+                minDmg3: 10, maxDmg3: 25,
+                minHp: 80, maxHp: 120,
+                level: 8,
+                armor: 7
+            ),
+            new EnemyData
+            (   // Giant
+                id: 16,
+                minDmg: 10, maxDmg: 30,
+                minHp: 150, maxHp: 200,
+                level: 10,
+                armor: 5
+            ),
+            new EnemyData
+            (   // Zombie
+                id: 17,
+                minDmg: 1, maxDmg: 5,
+                minHp: 60, maxHp: 100,
+                level: 5,
+                armor: 7
+            ),
+            new EnemyData
+            (   // Mummy
+                id: 19,
+                minDmg: 5, maxDmg: 15,
+                minHp: 120, maxHp: 190,
+                level: 15,
+                armor: -2
+            ),
+            new EnemyData
+            (   // Giant Scorpion
+                id: 20,
+                minDmg: 10, maxDmg: 15,
+                minHp: 15, maxHp: 70,
+                level: 4,
+                armor: 2
+            ),
+            new EnemyData
+            (   // Vampire Ancient
+                id: 30,
+                minDmg: 25, maxDmg: 60,
+                minHp: 80, maxHp: 200,
+                level: 20,
+                armor: -5
+            ),
+            new EnemyData
+            (   // Daedra Lord
+                id: 31,
+                minDmg: 40, maxDmg: 100,
+                minHp: 100, maxHp: 240,
+                level: 21,
+                armor: -10
+            ),
+            new EnemyData
+            (   // Lich
+                id: 32,
+                minDmg: 80, maxDmg: 110,
+                minHp: 60, maxHp: 200,
+                level: 20,
+                armor: -8
+            ),
+            new EnemyData
+            (   // Ancient Lich
+                id: 33,
+                minDmg: 100, maxDmg: 130,
+                minHp: 80, maxHp: 210,
+                level: 21,
+                armor: -12
+            ),
+            new EnemyData
+            (   // Orc
+                id: 7,
+                minDmg: 8, maxDmg: 15,
+                minHp: 30, maxHp: 60,
+                level: 6,
+                armor: 5
+            ),
+            new EnemyData
+            (   // Orc Sargeant
+                id: 12,
+                minDmg: 10, maxDmg: 30,
+                minHp: 40, maxHp: 100,
+                level: 9,
+                armor: 2
+            ),
+            new EnemyData
+            (   // Orc Shaman
+                id: 21,
+                minDmg: 8, maxDmg: 30,
+                minHp: 50, maxHp: 110,
+                level: 15,
+                armor: 6
+            ),
+            new EnemyData
+            (   // Orc Warlord
+                id: 24,
+                minDmg: 15, maxDmg: 50,
+                minHp: 80, maxHp: 150,
+                level: 19,
+                armor: -5
+            ),
+            new EnemyData
+            (   // Fire Atronach
+                id: 35,
+                minDmg: 15, maxDmg: 30,
+                minHp: 25, maxHp: 130,
+                level: 16,
+                armor: 6
+            ),
+            new EnemyData
+            (   // Iron Atronach
+                id: 35,
+                minDmg: 5, maxDmg: 15,
+                minHp: 25, maxHp: 130,
+                level: 16,
+                armor: -2
+            ),
+            new EnemyData
+            (   // Flesh Atronach
+                id: 35,
+                minDmg: 55, maxDmg: 15,
+                minHp: 150, maxHp: 350,
+                level: 16,
+                armor: 6
+            ),
+            new EnemyData
+            (   // Ice Atronach
+                id: 35,
+                minDmg: 5, maxDmg: 15,
+                minHp: 25, maxHp: 130,
+                level: 21,
+                armor: 6
+            ),
+            new EnemyData
+            (   // Dragon
+                name: "Large Dragonling",
+                id: 40,
+                minDmg: 50, maxDmg: 150,
+                minHp: 140, maxHp: 250,
+                level: 21,
+                armor: -12
+            ),
+        };
+
     }
 }

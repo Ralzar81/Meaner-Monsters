@@ -1,9 +1,9 @@
 {
     "ModTitle": "Meaner Monsters",
-    "ModVersion": "1.4",
+    "ModVersion": "1.5.2",
     "ModAuthor": "Ralzar",
     "ContactInfo": "forums.dfworkshop.com",
-    "DFUnity_Version": "0.10.17",
+    "DFUnity_Version": "1.0.0",
     "ModDescription": "Buffs many monsters. Debuffs rats, bats and zombies.",
     "GUID": "e2a4e0ec-89ec-4ccc-999a-cb16e6cef75e",
     "Files": [
@@ -55,6 +55,11 @@
         "Assets/Game/Mods/MeanerMonsters/xml/AlternateDragon/295_1-0.xml",
         "Assets/Game/Mods/MeanerMonsters/xml/AlternateDragon/096_0-0.xml"
     ],
-    "Contributes": null,
-    "Dependencies": null
+    "Dependencies": [
+        {
+            "Name": "unleveled mobs",
+            "IsOptional": true,
+            "IsPeer": false
+        }
+    ]
 }
